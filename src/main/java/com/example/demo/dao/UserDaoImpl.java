@@ -26,27 +26,28 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(int id) {
-        if (entityManager.find(User.class, id) == null) {
+        User user = entityManager.find(User.class, id);
+        if (user == null) {
             throw new EntityNotFoundException("Entity not found for given ID " + id);
         }
-        return entityManager.find(User.class, id);
+        return user;
     }
 
     @Override
     public void deleteUserById(int id) {
-        if (entityManager.find(User.class, id) == null) {
+        User user = entityManager.find(User.class, id);
+        if (user == null) {
             throw new EntityNotFoundException("Entity not found for given ID " + id);
         }
-        entityManager.remove(entityManager.find(User.class, id));
+        entityManager.remove(user);
     }
 
     @Override
     public void editUser(int id, User userNew) {
-        if (entityManager.find(User.class, id) == null) {
-            throw new EntityNotFoundException("Entity not found for given ID " + id);
-        }
         User user = entityManager.find(User.class, id);
-        if (user != null) {
+        if (user == null) {
+            throw new EntityNotFoundException("Entity not found for given ID " + id);
+        } else {
             user.setName(userNew.getName());
             user.setLastname(userNew.getLastname());
             user.setAge(userNew.getAge());
